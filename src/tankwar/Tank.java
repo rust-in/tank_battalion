@@ -20,6 +20,8 @@ import barrier.Wall;
 public class Tank{
 	public static final int SIZE=50;
 	public  int hpMax=50;
+	private int flag;
+	private int tile;
 	private int x;
 	private int y;
 	private int hp=50;
@@ -49,7 +51,7 @@ public class Tank{
 		return dir;
 	}
 	protected static enum Direction{U,L,D,R}
-	public Tank(int x,int y,boolean self,ArrayList<Tank> allTank,ArrayList<Wall> walls,ArrayList<Iron> irons,ArrayList<Gold> golds,ArrayList<Missle> missles,Home home,ArrayList<Boom>booms,int style) throws Exception{
+	public Tank(int x,int y,boolean self,ArrayList<Tank> allTank,ArrayList<Wall> walls,ArrayList<Iron> irons,ArrayList<Gold> golds,ArrayList<Missle> missles,Home home,ArrayList<Boom>booms,int style, int flag, int tile) throws Exception{
 		this.missles = missles;
 		this.booms = booms;
 		this.setX(x);
@@ -61,6 +63,8 @@ public class Tank{
 		this.irons = irons;
 		this.golds = golds;
 		this.home = home;
+		this.flag = flag;
+		this.tile = tile;
 		dir=Direction.R;
 		setLive(true);
 		if(!self) level=1+new Random().nextInt(3);
@@ -214,41 +218,81 @@ public class Tank{
 	}
 	public void keyPress(KeyEvent e)
 	{
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_UP:
-			up=true;
-			dir=Direction.U;
-			break;
-		case KeyEvent.VK_RIGHT:
-			right=true;
-			dir=Direction.R;
-			break;
-		case KeyEvent.VK_DOWN:
-			down=true;
-			dir=Direction.D;
-			break;
-		case KeyEvent.VK_LEFT:
-			left=true;
-			dir=Direction.L;
-			break;
+		if(flag==1){
+            switch (e.getKeyCode()) {
+				case KeyEvent.VK_W:
+                    up=true;
+                    dir=Direction.U;
+                    break;
+                case KeyEvent.VK_D:
+                    right=true;
+                    dir=Direction.R;
+                    break;
+                case KeyEvent.VK_S:
+                    down=true;
+                    dir=Direction.D;
+                    break;
+                case KeyEvent.VK_A:
+                    left=true;
+                    dir=Direction.L;
+                    break;
+            }
+		} else if (flag==2){
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_UP:
+                    up=true;
+                    dir=Direction.U;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    right=true;
+                    dir=Direction.R;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    down=true;
+                    dir=Direction.D;
+                    break;
+                case KeyEvent.VK_LEFT:
+                    left=true;
+                    dir=Direction.L;
+                    break;
+                }
 		}
+
 	}
 	public void keyReleased(KeyEvent e)
 	{
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_UP:
-			up=false;
-			break;
-		case KeyEvent.VK_RIGHT:
-			right=false;
-			break;
-		case KeyEvent.VK_DOWN:
-			down=false;
-			break;
-		case KeyEvent.VK_LEFT:
-			left=false;
-			break;
+		if(flag==1){
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_W:
+                    up=false;
+                    break;
+                case KeyEvent.VK_D:
+                    right=false;
+                    break;
+                case KeyEvent.VK_S:
+                    down=false;
+                    break;
+                case KeyEvent.VK_A:
+                    left=false;
+                    break;
+            }
+		} else if (flag==2){
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_UP:
+                    up=false;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    right=false;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    down=false;
+                    break;
+                case KeyEvent.VK_LEFT:
+                    left=false;
+                    break;
+            }
 		}
+
 	}
 	public boolean noMove(int willX,int willY)
 	{
@@ -273,14 +317,14 @@ public class Tank{
 		noFire=0l;
 		if(style!=3)
 		{
-		Missle mis=new Missle(x,y,this,allTank, walls,irons,golds,home, booms, missles);
+		Missle mis=new Missle(x,y,this,allTank, walls,irons,golds,home, booms, missles,tile);
 		new Thread(mis).start();
 		missles.add(mis);
 		}
 		else
 		{
-			Missle mis=new Missle(x-10,y-10,this,allTank, walls,irons,golds,home, booms, missles);
-			Missle mis2=new Missle(x+10,y+10,this,allTank, walls,irons,golds,home, booms, missles);
+			Missle mis=new Missle(x-10,y-10,this,allTank, walls,irons,golds,home, booms, missles, tile);
+			Missle mis2=new Missle(x+10,y+10,this,allTank, walls,irons,golds,home, booms, missles, tile);
 			new Thread(mis).start();
 			new Thread(mis2).start();
 			missles.add(mis);

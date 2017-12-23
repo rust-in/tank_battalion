@@ -34,11 +34,18 @@ public class Help extends JDialog{
 	}
 	public String str() {
 		return "1.控制：\r\n" +
+				"一号玩家: \r\n" +
+				"\t W坦克向上\r\n" +
+				"\t S坦克向下\r\n" +
+				"\t A坦克向左\r\n" +
+				"\t D坦克向右\r\n" +
+				"\t空格 开火\r\n" +
+				"二号玩家：\r\n" +
 				"\t↑坦克向上\r\n" +
 				"\t↓坦克向下\r\n" +
 				"\t←坦克向左\r\n" +
 				"\t→坦克向右\r\n" +
-				"\t空格 开火\r\n" +
+				"\t回车 开火\r\n" +
 				"2.关于地图：\r\n" +
 				"\t地图中棕色障碍和银色障碍是可以摧毁的障碍\r\n" +
 				"\t金色为不能摧毁的障碍\r\n" +

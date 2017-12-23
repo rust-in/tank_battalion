@@ -47,7 +47,7 @@ public class MapEdit implements ActionListener{
 		p=new JPanel(new GridLayout(ROWS,COLS));
 		pp=new JPanel(null);
 		p.setBounds(0, 0,TankWar.AREA_WIDTH , TankWar.AREA_HEIGHT);
-		image=new Image[7];
+		image=new Image[8];
 		image[0]=new ImageIcon(MapEdit.class.getResource("/pic/whiteback.jpg")).getImage();
 		image[1]=new ImageIcon(MapEdit.class.getResource("/img/wall_1.png")).getImage();
 		image[2]=new ImageIcon(MapEdit.class.getResource("/img/iron_1.png")).getImage();
@@ -55,6 +55,7 @@ public class MapEdit implements ActionListener{
 		image[4]=new ImageIcon(MapEdit.class.getResource("/img/born_1.png")).getImage();
 		image[5]=new ImageIcon(MapEdit.class.getResource("/img/born_enemy_1.png")).getImage();
 		image[6]=new ImageIcon(MapEdit.class.getResource("/img/home_1.png")).getImage();
+		image[7]=new ImageIcon(MapEdit.class.getResource("/img/born_2.png")).getImage();
 		but=new ButtonX[ROWS][COLS];
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j <COLS; j++) {
@@ -134,7 +135,7 @@ public class MapEdit implements ActionListener{
 		}
 		else if(e.getSource()==butSave)
 		{
-			int c4=0,c5=0,c6=0;
+			int c4=0,c5=0,c6=0,c7=0;
 			for (int i = 0; i < ROWS; i++) {
 				for (int j = 0; j <COLS; j++) {
 					switch (but[i][j].count) {
@@ -147,13 +148,16 @@ public class MapEdit implements ActionListener{
 					case 6:
 						c6++;
 						break;
+					case 7:
+						c7++;
+						break;
 					}
 				}
 			}
-				System.out.println(c4+"--"+c5+"--"+c6);
+				System.out.println(c4+"--"+c5+"--"+c6+"--"+c7);
 					if(c4!=1)
 					{
-						JOptionPane.showMessageDialog(f, "必须有且只有一个我方出生点（蓝毯子）");
+						JOptionPane.showMessageDialog(f, "必须有且只有一个我方一号出生点（蓝毯子）");
 						return;
 					}
 					if(c5<1)
@@ -164,6 +168,11 @@ public class MapEdit implements ActionListener{
 					if(c6!=1)
 					{
 						JOptionPane.showMessageDialog(f, "必须有且只有一个我方基地（苹果）");
+						return;
+					}
+					if(c7!=1)
+					{
+						JOptionPane.showMessageDialog(f, "必须有且只有一个我方二号出生点（蓝毯子）");
 						return;
 					}
 			fc.showSaveDialog(f);
@@ -190,7 +199,7 @@ public class MapEdit implements ActionListener{
 		else
 		{
 			ButtonX b=(ButtonX)e.getSource();
-			if(b.getCount()!=6)
+			if(b.getCount()!=7)
 			{
 				b.setCount(b.getCount()+1);
 			}

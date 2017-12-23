@@ -28,7 +28,8 @@ import mapediter.MapEdit;
 public class Main implements ActionListener{
 		private JFrame f;
 		private PanelX p;
-		private LightButton butStart;
+		private LightButton butSingle;
+		private LightButton butDouble;
 		private LightButton butEdit;
 		private LightButton butHelp;
 		private LightButton butAbort;
@@ -41,24 +42,28 @@ public class Main implements ActionListener{
 		private String map;
 		private int max;
 		protected int style;
+        protected int styleTwo;
 		public Main() {
 			setF(new JFrame("TankWar 3.0"));
 			p=new PanelX();
 			p.setLayout(null);
 			//设置按钮
-			butStart=new LightButton(20,210,140,50,"START");
-			butEdit=new LightButton(20,263,140,50,"Map Editer");
-			butHelp=new LightButton(20,316,140,50,"Help Doc");
-			butAbort=new LightButton(20,369,140,50,"About");
-			butExit=new LightButton(20,422,140,50,"Exit");
+			butSingle =new LightButton(20,210,140,50,"Single Player");
+			butDouble =new LightButton(20, 263, 140, 50, "Double Player");
+			butEdit=new LightButton(20,316,140,50,"Map Editer");
+			butHelp=new LightButton(20,369,140,50,"Help Doc");
+			butAbort=new LightButton(20,422,140,50,"About");
+			butExit=new LightButton(20,475,140,50,"Exit");
 			//响应事件
-			butStart.addActionListener(this);
+			butSingle.addActionListener(this);
+			butDouble.addActionListener(this);
 			butEdit.addActionListener(this);
 			butHelp.addActionListener(this);
 			butAbort.addActionListener(this);
 			butAbort.addActionListener(this);
 			butExit.addActionListener(this);
-			p.add(butStart);
+			p.add(butSingle);
+			p.add(butDouble);
 			p.add(butEdit);
 			p.add(butHelp);
 			p.add(butAbort);
@@ -120,12 +125,21 @@ public class Main implements ActionListener{
 		{
 			new MapEdit(this);
 		}
-		else if(e.getSource()==butStart) //开始
+		else if(e.getSource()== butSingle) //开始
 		{
-			dialog();
+			dialog(1);
 			try {
-				new TankWar(map,max,f,style); //游戏开始
+				new TankWar(map,max,f,style,styleTwo); //游戏开始
 			} catch (Exception e1) {
+			}
+		}
+		else if(e.getSource()== butDouble)
+		{
+			dialog(2);
+			try {
+				new TankWar(map,max+1,f,style,styleTwo);
+			} catch (Exception e1){
+
 			}
 		}
 		else if(e.getSource()==butHelp)
@@ -138,17 +152,24 @@ public class Main implements ActionListener{
 		}
 		
 	}
-	private void dialog() {
+	private void dialog(int flag) {
 		set = new JDialog(f,true);
 		set.setVisible(false);
 		set.setTitle("游戏设置");
-		set.setBounds(200,100, 400, 600);
+		if(flag==1){
+			set.setBounds(200,100, 400, 600);
+		} else if(flag==2){
+			set.setBounds(200,100, 550, 600);
+		}
 		JLabel tankShow=new JLabel(new ImageIcon(Main.class.getResource("/pic/tanks.jpg")));
 		tankShow.setBounds(150, 0, 243, 400);
 		ButtonGroup tankGroup=new ButtonGroup();
 		final JRadioButton tank1=new JRadioButton("重型坦克：");
 		final JRadioButton tank2=new JRadioButton("主战坦克：");
 		final JRadioButton tank3=new JRadioButton("轻型坦克：");
+        final JRadioButton tank4=new JRadioButton("重型坦克：");
+        final JRadioButton tank5=new JRadioButton("主战坦克：");
+        final JRadioButton tank6=new JRadioButton("轻型坦克：");
 		tank1.setSelected(true);
 		tankGroup.add(tank1);
 		tankGroup.add(tank2);
@@ -160,6 +181,20 @@ public class Main implements ActionListener{
 		tank1.setBounds(0, 0, 150, 120);
 		tank2.setBounds(0, 140, 150, 120);
 		tank3.setBounds(0, 280, 150, 120);
+
+		if(flag==2){
+			ButtonGroup tankGroupTwo = new ButtonGroup();
+			tank4.setSelected(true);
+			tankGroupTwo.add(tank4);
+			tankGroupTwo.add(tank5);
+			tankGroupTwo.add(tank6);
+			tank4.setFont(tankFont);
+			tank5.setFont(tankFont);
+			tank6.setFont(tankFont);
+			tank4.setBounds(400, 0, 150, 120);
+			tank5.setBounds(400, 140, 150, 120);
+			tank6.setBounds(400, 280, 150, 120);
+		}
 		JPanel dp = new JPanel(null);
 		File dir = new File("map");
 		String mapNames[]=dir.list();
@@ -167,7 +202,7 @@ public class Main implements ActionListener{
 		for (int i = 0; i < mapNames.length; i++) {
 			list.addItem(mapNames[i]);			
 		}
-		list.setBounds(100, 410, 250, 30);
+        list.setBounds(100, 410, 250, 30);
 		JLabel labMap = new JLabel("地图：");
 		labMap.setFont(new Font("宋体", 1, 20));
 		labMap.setBounds(20, 410, 80, 30);
@@ -199,6 +234,12 @@ public class Main implements ActionListener{
 				if(tank1.isSelected())	style=1;		
 				else if(tank2.isSelected()) style=2;
 				else if (tank3.isSelected()) style=3;
+				styleTwo = 0;
+				if(flag==2){
+					if(tank4.isSelected()) styleTwo=1;
+					else if (tank5.isSelected()) styleTwo=2;
+					else if (tank6.isSelected()) styleTwo=3;
+				}
 				over();
 			}
 		});
@@ -206,6 +247,11 @@ public class Main implements ActionListener{
 		dp.add(tank1);
 		dp.add(tank2);
 		dp.add(tank3);
+		if(flag==2){
+            dp.add(tank4);
+            dp.add(tank5);
+            dp.add(tank6);
+		}
 		dp.add(tankShow);
 		dp.add(butOk);
 		dp.add(showMax);

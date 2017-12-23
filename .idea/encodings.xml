@@ -10,6 +10,7 @@
     <file url="file://$PROJECT_DIR$/src/tankwar/Missle.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/tankwar/PanelShow.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/tankwar/Tank.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/tankwar/TankSecond.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/tankwar/TankWar.java" charset="GBK" />
   </component>
 </project>

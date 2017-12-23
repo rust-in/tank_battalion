@@ -28,7 +28,8 @@ public class Missle implements Runnable{
 	private final ArrayList<Gold> golds;
 	private final Home home;
 	private int power;
-	public Missle(int x,int y,Tank tank,ArrayList<Tank> allTanks,ArrayList<Wall> walls,ArrayList<Iron> irons,ArrayList<Gold> golds,Home home,ArrayList<Boom>booms,ArrayList<Missle> missles) 
+	private int flag;
+	public Missle(int x,int y,Tank tank,ArrayList<Tank> allTanks,ArrayList<Wall> walls,ArrayList<Iron> irons,ArrayList<Gold> golds,Home home,ArrayList<Boom>booms,ArrayList<Missle> missles, int flag)
 	{
 		this.allTanks = allTanks;
 		this.walls = walls;
@@ -45,6 +46,7 @@ public class Missle implements Runnable{
 		this.x=x+25-power/2;
 		this.y=y+25-power/2;
 		this.dir=tank.getDir();
+		this.flag=flag;
 		speed=10;
 	}
 	@Override
@@ -126,7 +128,9 @@ public class Missle implements Runnable{
 			
 			if(self)
 			{
-				for (int i = 1; i < allTanks.size(); i++) 
+				int start = 1;
+				if(flag==2) start = 2;
+				for (int i = start; i < allTanks.size(); i++)
 				{
 					if((x>allTanks.get(i).getX()&&x<allTanks.get(i).getX()+Tank.SIZE&&y>allTanks.get(i).getY()&&y<allTanks.get(i).getY()+Tank.SIZE))
 					{
@@ -171,6 +175,21 @@ public class Missle implements Runnable{
 							allTanks.get(0).setLive(false);
 						}
 						this.live=false;
+					}
+					if (flag==2){
+						if(x>allTanks.get(1).getX()&&x<allTanks.get(1).getX()+Tank.SIZE&&y>allTanks.get(1).getY()&&y<allTanks.get(1).getY()+Tank.SIZE)
+						{
+							if(!allTanks.get(1).isProtect())
+								allTanks.get(1).setHp(allTanks.get(1).getHp()-power);
+							if(allTanks.get(1).getHp()<=0)
+							{
+								Boom temp=new Boom(allTanks.get(1).getX(), allTanks.get(1).getY());
+								new Thread(temp).start();
+								booms.add(temp);
+								allTanks.get(1).setLive(false);
+							}
+							this.live=false;
+						}
 					}
 				}catch(Exception e){}
 			}

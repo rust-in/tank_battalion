@@ -22,10 +22,12 @@ public class Item  extends Thread{
 	private final ArrayList<Boom> booms;
 	private Home home;
 	private ArrayList<Iron> irons;
+	private int flag;
 
-		public Item(ArrayList<Tank> tanks,ArrayList<Boom> booms,ArrayList<Iron> irons,Home home)
+		public Item(ArrayList<Tank> tanks,ArrayList<Boom> booms,ArrayList<Iron> irons,Home home, int flag)
 		{
 			this.tanks = tanks;
+			this.flag = flag;
 			this.booms = booms;
 			this.home=home;
 			this.irons=irons;
@@ -62,7 +64,16 @@ public class Item  extends Thread{
 						(tank.getX()+50>x&&tank.getX()+50<x+50&&tank.getY()+50>y&&tank.getY()+50<y+50))
 					{
 						use(tank);
-						
+					}
+					if (flag==2){
+						Tank tank2 = tanks.get(1);
+                        if((tank.getX()>x&&tank.getX()<x+50&&tank.getY()>y&&tank.getY()<y+50)||
+                            (tank.getX()+50>x&&tank.getX()<x+50&&tank.getY()>y&&tank.getY()<y+50)||
+                            (tank.getX()>x&&tank.getX()<x+50&&tank.getY()+50>y&&tank.getY()<y+50)||
+                            (tank.getX()+50>x&&tank.getX()+50<x+50&&tank.getY()+50>y&&tank.getY()+50<y+50))
+                        {
+                            use(tank);
+                        }
 					}
 				try {
 					Thread.sleep(500);
