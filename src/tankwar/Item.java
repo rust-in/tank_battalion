@@ -10,19 +10,19 @@ import javax.swing.ImageIcon;
 import barrier.Home;
 import barrier.Iron;
 
-public class Item  extends Thread{			
-	private Random r;
-	private int x;
-	private int y;
-	private int style;
-	private Image face;
-	private boolean live=true;
-	private boolean flash;
-	private final ArrayList<Tank> tanks;
-	private final ArrayList<Boom> booms;
-	private Home home;
-	private ArrayList<Iron> irons;
-	private int flag;
+public class Item  extends Thread {
+		private Random r;
+		private int x;
+		private int y;
+		private int style;
+		private Image face;
+		private boolean live=true;
+		private boolean flash;
+		private final ArrayList<Tank> tanks;
+		private final ArrayList<Boom> booms;
+		private Home home;
+		private ArrayList<Iron> irons;
+		private int flag;
 
 		public Item(ArrayList<Tank> tanks,ArrayList<Boom> booms,ArrayList<Iron> irons,Home home, int flag)
 		{

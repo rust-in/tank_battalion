@@ -17,6 +17,7 @@ public class Help extends JDialog{
 	private JPanel p;
 	private JTextArea text;
 	private ScrollPane sp;
+
 	public Help() {
 		this.setBounds(200, 200, 400, 400);
 		this.setTitle("帮助文档");
@@ -32,6 +33,7 @@ public class Help extends JDialog{
 		p.add(sp,BorderLayout.CENTER);
 		this.add(p);
 	}
+
 	public String str() {
 		return "1.控制：\r\n" +
 				"一号玩家: \r\n" +
@@ -61,9 +63,11 @@ public class Help extends JDialog{
 				"\r\n\r\n\t\t祝游戏愉快";
 		
 	}
+
 	public void setText(JTextArea text) {
 		this.text = text;
 	}
+
 	public JTextArea getText() {
 		return text;
 	}

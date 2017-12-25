@@ -78,8 +78,8 @@ public class MapEdit implements ActionListener{
 		f.setSize(TankWar.AREA_WIDTH, TankWar.AREA_HEIGHT+100);
 		f.setVisible(true);
 	}
-	private class ButtonX extends JButton
-	{
+
+	private class ButtonX extends JButton {
 		/**
 		 * 
 		 */
@@ -99,12 +99,10 @@ public class MapEdit implements ActionListener{
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			if(getCount()==0)
-			{
+			if(getCount()==0) {
 				g.drawImage(image[0], 0,0,this.getWidth(),this.getHeight(), w*sc, sr*h, w*sc+w, sr*h+h, null);
 			}
-			else
-			{
+			else {
 				g.drawImage(image[getCount()], 0,0,this.getWidth(),this.getHeight(), 0, 0, 50, 50, null);
 			}
 		}
@@ -115,10 +113,10 @@ public class MapEdit implements ActionListener{
 			return count;
 		}
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==butLoad)
-		{
+		if(e.getSource()==butLoad) {
 			fc.showOpenDialog(f);
 			FileInputStream read=null;
 			try {
@@ -133,8 +131,7 @@ public class MapEdit implements ActionListener{
 				}
 			}
 		}
-		else if(e.getSource()==butSave)
-		{
+		else if(e.getSource()==butSave) {
 			int c4=0,c5=0,c6=0,c7=0;
 			for (int i = 0; i < ROWS; i++) {
 				for (int j = 0; j <COLS; j++) {
@@ -154,27 +151,23 @@ public class MapEdit implements ActionListener{
 					}
 				}
 			}
-				System.out.println(c4+"--"+c5+"--"+c6+"--"+c7);
-					if(c4!=1)
-					{
-						JOptionPane.showMessageDialog(f, "必须有且只有一个我方一号出生点（蓝毯子）");
-						return;
-					}
-					if(c5<1)
-					{
-						JOptionPane.showMessageDialog(f, "必须有超过一个的敌方出生点（红毯子）");
-						return;
-					}
-					if(c6!=1)
-					{
-						JOptionPane.showMessageDialog(f, "必须有且只有一个我方基地（苹果）");
-						return;
-					}
-					if(c7!=1)
-					{
-						JOptionPane.showMessageDialog(f, "必须有且只有一个我方二号出生点（蓝毯子）");
-						return;
-					}
+            System.out.println(c4+"--"+c5+"--"+c6+"--"+c7);
+            if(c4!=1) {
+                JOptionPane.showMessageDialog(f, "必须有且只有一个我方一号出生点（蓝毯子）");
+                return;
+            }
+            if(c5<1) {
+                JOptionPane.showMessageDialog(f, "必须有超过一个的敌方出生点（红毯子）");
+                return;
+            }
+            if(c6!=1) {
+                JOptionPane.showMessageDialog(f, "必须有且只有一个我方基地（苹果）");
+                return;
+            }
+            if(c7!=1) {
+                JOptionPane.showMessageDialog(f, "必须有且只有一个我方二号出生点（蓝毯子）");
+                return;
+            }
 			fc.showSaveDialog(f);
 			FileOutputStream write=null;
 			try {
@@ -191,20 +184,16 @@ public class MapEdit implements ActionListener{
 				write.close();
 			} catch (Exception e1) {}
 		}
-		else if(e.getSource()==butExit)
-		{
+		else if(e.getSource()==butExit) {
 			f.setVisible(false);
 			m.getF().setVisible(true);
 		}
-		else
-		{
+		else {
 			ButtonX b=(ButtonX)e.getSource();
-			if(b.getCount()!=7)
-			{
+			if(b.getCount()!=7) {
 				b.setCount(b.getCount()+1);
 			}
-			else
-			{
+			else {
 				b.setCount(0);
 			}
 			b.repaint();

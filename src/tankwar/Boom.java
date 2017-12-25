@@ -19,6 +19,7 @@ public class Boom implements Runnable{
 			boom[i]=new ImageIcon(Main.class.getResource("/img/boom_"+i+".png"));
 		}
 	}
+
 	public void drawBoom(Graphics g)
 	{
 		g.setColor(Color.black);
@@ -28,6 +29,7 @@ public class Boom implements Runnable{
 		}
 		if(count==5) live=false;
 	}
+
 	@Override
 	public void run() {
 		while(count<=5)
@@ -37,6 +39,7 @@ public class Boom implements Runnable{
 		}
 		
 	}
+
 	public boolean isLive() {
 		return live;
 	}
