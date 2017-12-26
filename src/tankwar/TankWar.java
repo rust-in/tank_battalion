@@ -73,196 +73,205 @@ public class TankWar implements KeyListener {
                                                                                                }
 
     private void init() {
-                    f = new JFrame("坦克大战 V3.0");
-                    gamePanel = new JPanel(null);
-                    p = new myPanel();
-                    p.setBackground(Color.WHITE);
-                    r = new Random();
-                    messgePanel = new PanelShow();
-                    initMap(new File("map/"+map));
+        f = new JFrame("坦克大战 V3.0");
+        gamePanel = new JPanel(null);
+        p = new myPanel();
+        p.setBackground(Color.WHITE);
+        r = new Random();
+        messgePanel = new PanelShow();
+        initMap(new File("map/"+map));
 
-                    if(styleTwo == 0){
-                    try {
-                    myTank = new Tank(selfBorn.getX(), selfBorn.getY(), true, allTanks, walls, irons, golds, missles, home, booms, style,1, 1);
-                    } catch (Exception e1) {}
-                    myTank.setDir(Direction.U);
-                    allTanks.add(myTank);
-                    }
+        if(styleTwo == 0){
+            try {
+                myTank = new Tank(selfBorn.getX(), selfBorn.getY(), true, allTanks, walls, irons, golds, missles, home, booms, style,1, 1);
+            } catch (Exception e1) {}
+            myTank.setDir(Direction.U);
+            allTanks.add(myTank);
+        }
 
-                    else {
-                    try {
-                    myTank = new Tank(selfBorn.getX(), selfBorn.getY(), true, allTanks, walls, irons, golds, missles, home, booms, style, 1, 2);
-                    } catch (Exception e1) {}
-                    myTank.setDir(Direction.U);
-                    allTanks.add(myTank);
+        else {
+            try {
+                myTank = new Tank(selfBorn.getX(), selfBorn.getY(), true, allTanks, walls, irons, golds, missles, home, booms, style, 1, 2);
+            } catch (Exception e1) {}
+            myTank.setDir(Direction.U);
+            allTanks.add(myTank);
 
-                    try {
-                    secondTank = new Tank(secondBorn.getX(), secondBorn.getY(), true, allTanks, walls, irons, golds, missles, home, booms, styleTwo, 2, 2);
-                    } catch (Exception el){}
-                    secondTank.setDir(Direction.U);
-                    allTanks.add(secondTank);
-                    }
+            try {
+                secondTank = new Tank(secondBorn.getX(), secondBorn.getY(), true, allTanks, walls, irons, golds, missles, home, booms, styleTwo, 2, 2);
+            } catch (Exception el){}
+            secondTank.setDir(Direction.U);
+            allTanks.add(secondTank);
+        }
 
-                    addTank();
-                    try {
-                    backGround = new ImageIcon(TankWar.class.getResource("/pic/whiteback.jpg"));
-                    } catch(Exception e){}
+        addTank();
+        try {
+            backGround = new ImageIcon(TankWar.class.getResource("/pic/whiteback.jpg"));
+        } catch(Exception e){}
 
-                    p.setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.WHITE));
-                    p.setSize(AREA_WIDTH,AREA_HEIGHT);
-                    messgePanel.setBounds(AREA_WIDTH, 0, 200, AREA_HEIGHT);
-                    gamePanel.add(messgePanel);
-                    gamePanel.add(p);
-                    f.add(gamePanel);
-                    f.setBounds(0, 0,AREA_WIDTH + 200 , AREA_HEIGHT);
-                    f.setDefaultCloseOperation(3);
-                    f.setResizable(false);
-                    f.setFocusable(true);
-                    f.addKeyListener(this);
-                    f.setVisible(true);
+        p.setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.WHITE));
+        p.setSize(AREA_WIDTH,AREA_HEIGHT);
+        messgePanel.setBounds(AREA_WIDTH, 0, 200, AREA_HEIGHT);
+        gamePanel.add(messgePanel);
+        gamePanel.add(p);
+        f.add(gamePanel);
+        f.setBounds(0, 0,AREA_WIDTH + 200 , AREA_HEIGHT);
+        f.setDefaultCloseOperation(3);
+        f.setResizable(false);
+        f.setFocusable(true);
+        f.addKeyListener(this);
+        f.setVisible(true);
 
-                    new Thread(new Runnable() {
-                    public void run() {
-                    while(!over) {
+        new Thread(new Runnable() {
+            public void run() {
+                while(!over) {
                     if(styleTwo==0) {
-                    if (!myTank.isLive()) {
-                    selfMax--;
-                    if (selfMax < 0) {
-                    f.removeKeyListener(tw);
-                    over = true;
-                    win = false;
-                    break;
+                        if (!myTank.isLive()) {
+                            selfMax--;
+                            if (selfMax < 0) {
+                                f.removeKeyListener(tw);
+                                over = true;
+                                win = false;
+                                break;
+                            }
+
+                            else {
+                                myTank.setLevel(1);
+                                myTank.setX(selfBorn.getX());
+                                myTank.setY(selfBorn.getY());
+                                myTank.setDir(Direction.U);
+                                myTank.setHp(50);
+                                myTank.setLive(true);
+                            }
+                        }
+
+                        if (tankMax <= 0 && allTanks.size() == 1) {
+                            f.removeKeyListener(tw);
+                            over = true;
+                            win = true;
+                        }
+
+                        if (!home.isLive()) {
+                            f.removeKeyListener(tw);
+                            over = true;
+                            win = false;
+                        }
+
+                        p.repaint();
+                        myTank.move();
+                        for (int i = 1; i < allTanks.size(); i++) {
+                            allTanks.get(i).move();
+                            allTanks.get(i).setNoFire(myTank.getNoFire() + 1);
+                            //if(allTanks.get(i).getX()%5==0&&allTanks.get(i).getY()%5==0)
+                            aI(allTanks.get(i));
+                        }
+
+                        if (allTanks.size() <= enemyBorns.size() + 1)
+                            addTank();
+
+                        myTank.setNoFire(myTank.getNoFire() + 1);
+                        messgePanel.setEnemyCount(tankMax);
+                        messgePanel.setSelfCount(selfMax);
+                        messgePanel.setScore(SCORE);
+
+                        if (SCORE % 500 == 0) {
+                            SCORE += 100;
+                            Item item = new Item(allTanks, booms, irons, home,1);
+                            items.add(item);
+                            item.start();
+                        }
+
+                        try {
+                            Thread.sleep(30);
+                        } catch (InterruptedException e) {}
                     }
 
                     else {
-                    myTank.setLevel(1);
-                    myTank.setX(selfBorn.getX());
-                    myTank.setY(selfBorn.getY());
-                    myTank.setDir(Direction.U);
-                    myTank.setHp(50);
-                    myTank.setLive(true);
-                    }
-                    }
+                        if(!myTank.isLive() || !secondTank.isLive()) {
+                            selfMax--;
+                            if (selfMax < 0) {
+                                if(!myTank.isLive()&&!secondTank.isLive()) {
+                                    f.removeKeyListener(tw);
+                                    over = true;
+                                    win = false;
+                                    break;
+                                }
+                                else {
+                                    if(!myTank.isLive()){
+                                        myTank.isDead();
+                                    } else {
+                                        secondTank.isDead();
+                                    }
+                                }
+                            }
 
-                    if (tankMax <= 0 && allTanks.size() == 1) {
-                    f.removeKeyListener(tw);
-                    over = true;
-                    win = true;
-                    }
+                            else {
+                                if(!myTank.isLive()) {
+                                    myTank.setLevel(1);
+                                    myTank.setX(selfBorn.getX());
+                                    myTank.setY(selfBorn.getY());
+                                    myTank.setDir(Direction.U);
+                                    myTank.setHp(50);
+                                    myTank.setLive(true);
+                                }
 
-                    if (!home.isLive()) {
-                    f.removeKeyListener(tw);
-                    over = true;
-                    win = false;
-                    }
+                                else if(!secondTank.isLive()) {
+                                    secondTank.setLevel(1);
+                                    secondTank.setX(secondBorn.getX());
+                                    secondTank.setY(secondBorn.getY());
+                                    secondTank.setDir(Direction.U);
+                                    secondTank.setHp(50);
+                                    secondTank.setLive(true);
+                                }
+                            }
+                        }
 
-                    p.repaint();
-                    myTank.move();
-                    for (int i = 1; i < allTanks.size(); i++) {
-                    allTanks.get(i).move();
-                    allTanks.get(i).setNoFire(myTank.getNoFire() + 1);
-                    //if(allTanks.get(i).getX()%5==0&&allTanks.get(i).getY()%5==0)
-                    aI(allTanks.get(i));
-                    }
+                        if (tankMax <= 0 && allTanks.size() <= 2 && allTanks.size() >= 1) {
+                            f.removeKeyListener(tw);
+                            over = true;
+                            win = true;
+                        }
 
-                    if (allTanks.size() <= enemyBorns.size() + 1) addTank();
+                        if (!home.isLive()) {
+                            f.removeKeyListener(tw);
+                            over = true;
+                            win = false;
+                        }
 
-                    myTank.setNoFire(myTank.getNoFire() + 1);
-                    messgePanel.setEnemyCount(tankMax);
-                    messgePanel.setSelfCount(selfMax);
-                    messgePanel.setScore(SCORE);
+                        p.repaint();
+                        myTank.move();
+                        secondTank.move();
 
-                    if (SCORE % 500 == 0) {
-                    SCORE += 100;
-                    Item item = new Item(allTanks, booms, irons, home,1);
-                    items.add(item);
-                    item.start();
-                    }
+                        for (int i = 2; i < allTanks.size(); i++) {
+                            allTanks.get(i).move();
+                            allTanks.get(i).setNoFire(myTank.getNoFire() + 1);
+                            allTanks.get(i).setNoFire(secondTank.getNoFire() + 1);
+                            //if(allTanks.get(i).getX()%5==0&&allTanks.get(i).getY()%5==0)
+                            aI(allTanks.get(i));
+                        }
 
-                    try {
-                    Thread.sleep(30);
-                    } catch (InterruptedException e) {}
-                    }
+                        if (allTanks.size() <= enemyBorns.size() + 1)
+                            addTank();
+                        myTank.setNoFire(myTank.getNoFire() + 1);
+                        secondTank.setNoFire(secondTank.getNoFire() + 1);
+                        messgePanel.setEnemyCount(tankMax);
+                        messgePanel.setSelfCount(selfMax);
+                        messgePanel.setScore(SCORE);
 
-                    else {
-                    if(!myTank.isLive() || !secondTank.isLive()) {
-                    selfMax--;
-                    if (selfMax < 0) {
-                    if(!myTank.isLive()&&!secondTank.isLive()) {
-                    f.removeKeyListener(tw);
-                    over = true;
-                    win = false;
-                    break;
+                        if (SCORE % 500 == 0) {
+                            SCORE += 100;
+                            Item item = new Item(allTanks, booms, irons, home, 2);
+                            items.add(item);
+                            item.start();
+                        }
+                        try {
+                            Thread.sleep(30);
+                        } catch (InterruptedException e) {}
                     }
-                    }
-
-                    else {
-                    if(!myTank.isLive()) {
-                    myTank.setLevel(1);
-                    myTank.setX(selfBorn.getX());
-                    myTank.setY(selfBorn.getY());
-                    myTank.setDir(Direction.U);
-                    myTank.setHp(50);
-                    myTank.setLive(true);
-                    }
-
-                    else if(!secondTank.isLive()) {
-                    secondTank.setLevel(1);
-                    secondTank.setX(secondBorn.getX());
-                    secondTank.setY(secondBorn.getY());
-                    secondTank.setDir(Direction.U);
-                    secondTank.setHp(50);
-                    secondTank.setLive(true);
-                    }
-                    }
-                    }
-
-                    if (tankMax <= 0 && allTanks.size() <= 2 && allTanks.size() >= 1) {
-                    f.removeKeyListener(tw);
-                    over = true;
-                    win = true;
-                    }
-
-                    if (!home.isLive()) {
-                    f.removeKeyListener(tw);
-                    over = true;
-                    win = false;
-                    }
-
-                    p.repaint();
-                    myTank.move();
-                    secondTank.move();
-
-                    for (int i = 2; i < allTanks.size(); i++) {
-                    allTanks.get(i).move();
-                    allTanks.get(i).setNoFire(myTank.getNoFire() + 1);
-                    allTanks.get(i).setNoFire(secondTank.getNoFire() + 1);
-                    //if(allTanks.get(i).getX()%5==0&&allTanks.get(i).getY()%5==0)
-                    aI(allTanks.get(i));
-                    }
-
-                    if (allTanks.size() <= enemyBorns.size() + 1) addTank();
-                    myTank.setNoFire(myTank.getNoFire() + 1);
-                    secondTank.setNoFire(secondTank.getNoFire() + 1);
-                    messgePanel.setEnemyCount(tankMax);
-                    messgePanel.setSelfCount(selfMax);
-                    messgePanel.setScore(SCORE);
-
-                    if (SCORE % 500 == 0) {
-                    SCORE += 100;
-                    Item item = new Item(allTanks, booms, irons, home, 2);
-                    items.add(item);
-                    item.start();
-                    }
-                    try {
-                    Thread.sleep(30);
-                    } catch (InterruptedException e) {}
-                    }
-                    }
-                    over();
-                    }
-                    }).start();
-                    }
+                }
+                over();
+            }
+        }).start();
+    }
 
     private class myPanel extends JPanel {
 
@@ -389,10 +398,10 @@ public class TankWar implements KeyListener {
                 || (tank.getX() == myTank.getX() &&tank.getY() > myTank.getY() && tank.getDir() == Direction.U)
                 || (tank.getY() == myTank.getY() &&tank.getX() > myTank.getX() && tank.getDir() == Direction.L)
                 || (tank.getY() == myTank.getY() &&tank.getX() < myTank.getX() && tank.getDir() == Direction.R)
-                || (tank.getX() == secondTank.getX() &&tank.getY() < secondTank.getY() && tank.getDir() == Direction.D)
-                || (tank.getX() == secondTank.getX() &&tank.getY() > secondTank.getY() && tank.getDir() == Direction.U)
-                || (tank.getY() == secondTank.getY() &&tank.getX() > secondTank.getX() && tank.getDir() == Direction.L)
-                || (tank.getY() == secondTank.getY() &&tank.getX() < secondTank.getX() && tank.getDir() == Direction.R)
+                || ((styleTwo!=0) && (tank.getX() == secondTank.getX() &&tank.getY() < secondTank.getY() && tank.getDir() == Direction.D))
+                || ((styleTwo!=0) && (tank.getX() == secondTank.getX() &&tank.getY() > secondTank.getY() && tank.getDir() == Direction.U))
+                || ((styleTwo!=0) && (tank.getY() == secondTank.getY() &&tank.getX() > secondTank.getX() && tank.getDir() == Direction.L))
+                || ((styleTwo!=0) && (tank.getY() == secondTank.getY() &&tank.getX() < secondTank.getX() && tank.getDir() == Direction.R))
                 ) {
             tank.fire();
         }

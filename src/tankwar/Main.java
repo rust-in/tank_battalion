@@ -88,8 +88,8 @@ public class Main implements ActionListener{
 		}
 
 	    public static void main(String[] args) {
-		new Main();
-	}
+            new Main();
+        }
 
         /**
         * 中间布局
@@ -119,6 +119,7 @@ public class Main implements ActionListener{
             }
 		    getF().setVisible(false);
 	    }
+
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 
@@ -131,8 +132,8 @@ public class Main implements ActionListener{
 			    try {
 				    new TankWar(map, max, f, style, styleTwo); //游戏开始
 			    } catch (Exception e1) {
-			}
-		}
+                }
+            }
 
 		    else if(e.getSource() == butDouble) {
 			    dialog(2);
@@ -141,11 +142,15 @@ public class Main implements ActionListener{
 			    } catch (Exception e1){ }
 		    }
 
-		    else if(e.getSource() == butHelp) { help.setVisible(true); }
+		    else if(e.getSource() == butHelp) {
+		    	help.setVisible(true);
+		    }
 
-		    else if(e.getSource() == butAbort) { about.setVisible(true); }
+		    else if(e.getSource() == butAbort) {
+		    	about.setVisible(true);
+		    }
 		
-	}
+        }
 
 	    private void dialog(int flag) {
 		    set = new JDialog(f, true);
@@ -282,10 +287,10 @@ public class Main implements ActionListener{
 	    }
 
 	    public void setF(JFrame f) {
-		this.f = f;
-	}
+            this.f = f;
+        }
 
 	    public JFrame getF() {
-		return f;
-	}
+            return f;
+        }
 }
